@@ -4,10 +4,10 @@
   gather_facts: no
 
   vars:
-    base_image: node:8
-    container_name: hubot_slack
-    image_namespace: a4d
-    image_name: hubot-slack
+    base_image: geerlingguy/docker-ubuntu1804-ansible
+    container_name: docker-ubuntu1804-ansible
+    image_namespace: shk3bq4d
+    image_name: docker-ubuntu1804-ansible-image
 
   pre_tasks:
     - name: Make the latest version of the base image available locally.
@@ -27,7 +27,7 @@
         ansible_connection: docker
 
   roles:
-    - name: hubot-slack
+    - name: stdenv
       delegate_to: '{{ container_name }}'
 
   post_tasks:
@@ -42,10 +42,9 @@
     - name: Commit the container.
       command: >
         docker commit
-        -c 'USER hubot'
-        -c 'WORKDIR "/home/hubot"'
-        -c 'CMD ["bin/hubot", "--adapter", "slack"]'
-        -c 'VOLUME ["/home/hubot/scripts"]'
+        -c 'USER stdenv'
+        -c 'WORKDIR "/home/stdenv"'
+        -c 'CMD ["bash"]'
         {{ container_name }} {{ image_namespace }}/{{ image_name }}:latest
 
     - name: Remove the container.
