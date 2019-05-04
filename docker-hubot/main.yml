@@ -13,7 +13,8 @@
     - name: Make the latest version of the base image available locally.
       docker_image:
         name: '{{ base_image }}'
-        force: yes
+        #force: yes
+        force: no
 
     - name: Create the Docker container.
       docker_container:
@@ -38,6 +39,7 @@
       delegate_to: '{{ container_name }}'
       args:
         warn: no
+      when: false
 
     - name: Commit the container.
       command: >
@@ -46,8 +48,10 @@
         -c 'WORKDIR "/home/stdenv"'
         -c 'CMD ["bash"]'
         {{ container_name }} {{ image_namespace }}/{{ image_name }}:latest
+      when: false
 
     - name: Remove the container.
       docker_container:
         name: '{{ container_name }}'
         state: absent
+      when: false

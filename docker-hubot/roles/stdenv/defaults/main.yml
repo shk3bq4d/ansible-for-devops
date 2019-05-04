@@ -1,1 +1,3 @@
 ---
+home: /home/rumo
+stdenv_dir: /home/rumo/git/rumo/stdenv

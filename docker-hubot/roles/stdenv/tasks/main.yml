@@ -1,2 +1,30 @@
 ---
 - shell: echo "Salut $(date) $(hostname -f)"
+- name: apt install
+  apt:
+    cache_valid_time: 86400
+    update_cache: yes
+    name:
+      - git
+    state: present
+- file:
+    state: directory
+    path: "{{ stdenv_dir }}"
+- git:
+    accept_hostkey: yes
+    depth: 1
+    force: yes
+    #separate_git_dir: "{{ stdenv_dir }}"
+    dest: "{{ stdenv_dir }}"
+    #dest: "{{ home }}"
+    recursive: no
+    clone: yes
+    remote: github
+    repo: https://github.com/shK3Bq4d/stdenv.git
+    version: stdenv
+- git_config:
+    repo: ~/git/rumo/websupport/
+    name: pull.rebase
+    scope: local
+    value: "true"
+  with_dict:
